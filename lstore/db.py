@@ -1,6 +1,6 @@
 from lstore.table import Table
 from lstore.bufferpool import BufferPool
-import os, json
+import os, json, shutil
 
 class Database():
 
@@ -63,10 +63,13 @@ class Database():
             open_path = self.path if self.path is not None else "./ECS165"
             self.open(open_path)
 
-        # check if table name already exists
-        for table in self.tables:
+        for i, table in enumerate(self.tables):
             if table.name == name:
-                raise RuntimeError("Table name already exists")
+                del self.tables[i]
+                if self.path is not None:
+                    shutil.rmtree(os.path.join(self.path, name), ignore_errors=True)
+                    shutil.rmtree(os.path.join(self.path, "tables", name), ignore_errors=True)
+                break
             
         table = Table(name, num_columns, key_index)
         
