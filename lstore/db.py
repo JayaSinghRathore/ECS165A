@@ -8,6 +8,7 @@ class Database():
     def __init__(self):
         self.tables = []
         self.path = None
+        self.bufferpool = None
 
 
     def open(self, path):
@@ -58,6 +59,10 @@ class Database():
     :param key: int             #Index of table key in columns
     """
     def create_table(self, name, num_columns, key_index):
+        if self.bufferpool is None:
+            open_path = self.path if self.path is not None else "./ECS165"
+            self.open(open_path)
+
         # check if table name already exists
         for table in self.tables:
             if table.name == name:
