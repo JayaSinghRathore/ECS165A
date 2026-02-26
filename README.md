@@ -1,2 +1,1 @@
-# ECS165A
-Projects
+# 165a-winter-2026
